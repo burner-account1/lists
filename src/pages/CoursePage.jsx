@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import Papa from 'papaparse';
 
-const CoursePage = ({ data }) => {
-  const { courseId } = useParams();
+const CoursePage = ({ data, row }) => {
   const [htmlMessage, setHtmlMessage] = useState("");
 
   // ---------- State ----------
@@ -29,35 +27,35 @@ const CoursePage = ({ data }) => {
   // Count how many items aren't green
   const notGreenCount = colorStates.filter((c) => c !== 'green').length;
 
-  // [NEW] Track if we've finished loading from localStorage
+  // Track if we've finished loading from localStorage
   const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false);
 
-  // [NEW] Track which rows are expanded to show THOUGHTS
+  // Track which rows are expanded to show THOUGHTS
   const [expandedRows, setExpandedRows] = useState({});
 
   // ---------- 1) Fetch course data once ----------
   useEffect(() => {
-    const courseRow = data.find((row) => row.id === courseId);
+    if (!row) return; // If no row is passed, exit early
 
-    if (courseRow) {
-      setDocumentLink(courseRow.CoursePagePDF || '');
-      setCourseInfo({
-        title: courseRow.courseTitle || 'No Title Available',
-        message: courseRow.message || 'No additional information available.',
-      });
-    }
+    // Set up info from the row
+    setDocumentLink(row.CoursePagePDF || '');
+    setCourseInfo({
+      title: row.courseTitle || 'No Title Available',
+      message: row.message || 'No additional information available.'
+    });
 
+    // Fetch the packing list (if courseSheetUrl is provided)
     const fetchCourseData = async () => {
       try {
-        if (!courseRow?.courseSheetUrl) {
+        if (!row.courseSheetUrl) {
           console.warn('No courseSheetUrl provided for this course');
           return;
         }
-        const response = await fetch(courseRow.courseSheetUrl);
+        const response = await fetch(row.courseSheetUrl);
         const text = await response.text();
         const parsedData = Papa.parse(text, { header: true, delimiter: '\t' }).data;
 
-        // We add a small step to ensure each item can hold a `crossedOff` property
+        // Add a `crossedOff` property or any other custom fields
         const itemsWithCross = parsedData.slice(1).map((itm) => ({
           ...itm,
           crossedOff: false,
@@ -68,8 +66,9 @@ const CoursePage = ({ data }) => {
         console.error('Error fetching course data:', error);
       }
     };
+
     fetchCourseData();
-  }, [courseId, data]);
+  }, [row]);
 
   // ---------- 2) Load from localStorage (once per courseId) ----------
   useEffect(() => {
@@ -336,7 +335,7 @@ const CoursePage = ({ data }) => {
       }
     });
 
-    urlParams.set('AssociateTag', 'ceprince-20');
+    urlParams.set('AssociateTag', 'ceprince01-20');
     const finalUrl = `${baseUrl}?${urlParams.toString()}`;
     window.open(finalUrl, '_blank', 'noopener,noreferrer');
 
