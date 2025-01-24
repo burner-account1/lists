@@ -1,53 +1,31 @@
+// DynamicPage.jsx
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-
-import LandingPage from "./LandingPage";
-import MOSPage from "./MOSPage";
+import { useParams } from "react-router-dom";
+import NavigationPage from "./NavigationPage";
 import CoursePage from "./CoursePage";
-
-// Optionally, if you want a custom page type:
-// import MyCustomPage from "./MyCustomPage";
+import GenericPage from "./GenericPage";
 
 const DynamicPage = ({ data }) => {
-  const { pageId } = useParams();  // the :pageId from the route
-  const navigate = useNavigate();
-
-  // 1) Find the matching row in your spreadsheet data by 'id'
+  const { pageId } = useParams();
   const row = data.find((r) => r.id === pageId);
 
-  // 2) If no match, show a 404 or fallback
-  if (!row) {
-    return <div>Page not found.</div>;
+  if (!row) return <div>Page not found.</div>;
+
+  // If it's a course
+  if (row.pageType === "course") {
+    return <CoursePage data={data} row={row} />;
+  }
+  // If it's normal navigation
+  if (row.pageType === "navigation") {
+    return <NavigationPage data={data} row={row} />;
+  }
+  // If it's myCustom or fallback
+  if (row.pageType === "myCustom") {
+    // ...
   }
 
-  // 3) Determine which component or action based on 'pageType'
-  switch (row.pageType) {
-    case "landing":
-      // If you want to reuse your existing LandingPage for a 'landing' row
-      return <LandingPage data={data} row={row} />;
-
-    case "mos":
-      // Reuse MOSPage
-      return <MOSPage data={data} row={row} />;
-
-    case "course":
-      // Reuse CoursePage
-      return <CoursePage data={data} row={row} />;
-
-    case "external":
-      // Immediately redirect to row.externalURL 
-      // or open in new tab if you prefer
-      window.location.href = row.externalURL;
-      return null;
-
-    case "myCustom":
-      // A brand-new page type
-      return <MyCustomPage data={data} row={row} />;
-
-    default:
-      // fallback if pageType is unrecognized
-      return <div>{row.message || "No recognized pageType found."}</div>;
-  }
+  // fallback
+  return <GenericPage data={data} row={row} />;
 };
 
 export default DynamicPage;

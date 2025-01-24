@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Papa from 'papaparse';
+import BreadcrumbNav from "./BreadcrumbNav";
 
 const CoursePage = ({ data, row }) => {
   const [htmlMessage, setHtmlMessage] = useState("");
@@ -52,7 +53,7 @@ const CoursePage = ({ data, row }) => {
         const parsedData = Papa.parse(text, { header: true, delimiter: '\t' }).data;
 
         // Basic parsing to create the initial list
-        const itemsList = parsedData.slice(1).map((itm) => ({
+        const itemsList = parsedData.map((itm) => ({
           ...itm,
           crossedOff: false,
         }));
@@ -244,12 +245,7 @@ const CoursePage = ({ data, row }) => {
         padding: '1rem',
       }}
     >
-      <Link
-        to="/"
-        style={{ display: 'block', marginTop: '1.5rem', color: 'blue', fontWeight: 'bold' }}
-      >
-        Return to Main Page
-      </Link>
+      <BreadcrumbNav data={data} row={row} />
 
       {/* Show dynamic "not green" counts by M/O color at the top */}
       <div style={{ marginTop: '1rem', color: '#000', fontWeight: 'bold' }}>
