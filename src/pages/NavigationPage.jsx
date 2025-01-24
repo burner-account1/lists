@@ -12,7 +12,7 @@ const linkStyle = {
 
 const NavigationPage = ({ data, row }) => {
   const location = useLocation();
-  useDynamicGtag(row?.courseTitle, location.pathname);
+  useDynamicGtag(row?.title, location.pathname);
 
 
   // Find immediate children

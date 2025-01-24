@@ -10,7 +10,7 @@ const DynamicPage = ({ data }) => {
   const { pageId } = useParams();
   
   const row = data.find((r) => r.id === pageId);
-  useDynamicGtag(row?.courseTitle, location.pathname);
+  useDynamicGtag(row?.title, location.pathname);
   if (!row) return <div>Page not found.</div>;
 
   // If it's a course

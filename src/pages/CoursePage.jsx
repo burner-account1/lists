@@ -8,7 +8,7 @@ const CoursePage = ({ data, row }) => {
   const location = useLocation();
 
   // ---------- 1) UseEffect to configure Google Tag on path/title change ----------
-  useDynamicGtag(row?.courseTitle, location.pathname);
+  useDynamicGtag(row?.title, location.pathname);
 
 
   // ---------- 2) Local state ----------

@@ -5,7 +5,7 @@ import useDynamicGtag from "./useDynamicGtag";
 
 const GenericPage = ({ data, row }) => {
   const location = useLocation();
-  useDynamicGtag(row?.courseTitle, location.pathname);
+  useDynamicGtag(row?.title, location.pathname);
 
 
   return (
