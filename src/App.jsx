@@ -4,7 +4,8 @@ import Papa from "papaparse";
 import DynamicPage from "./pages/DynamicPage";
 import "./App.css";
 
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRXx2CY11j1W_58K9CQY7esUJQTKQvAZvvYGgtYKMuohktvG70TQQAp23sM0zZbIIlT1ZF3-fDAZgAQ/pub?output=tsv";
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQnARSkARuiT-loYhnqLfEQ5tl0CecRL39x1fsg2T1y56xLMjpoz8JauaUHa7rIUlQD09UVF3MAMECt/pub?output=tsv'
+//"https://docs.google.com/spreadsheets/d/e/2PACX-1vRXx2CY11j1W_58K9CQY7esUJQTKQvAZvvYGgtYKMuohktvG70TQQAp23sM0zZbIIlT1ZF3-fDAZgAQ/pub?output=tsv";
 
 const App = () => {
   const [data, setData] = useState([]);
