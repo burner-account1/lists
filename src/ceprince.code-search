@@ -1,0 +1,9 @@
+# Query: ceprince
+# ContextLines: 1
+
+1 result - 1 file
+
+src/pages/CoursePage.jsx:
+  338  
+  339:     urlParams.set('AssociateTag', 'ceprince01-20');
+  340      const finalUrl = `${baseUrl}?${urlParams.toString()}`;
