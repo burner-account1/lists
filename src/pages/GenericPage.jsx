@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const GenericPage = ({ data, row }) => {
-  // row has keys like: pageType, id, title, message, parent, level, courseSheetUrl, etc.
+  const location = useLocation();
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("config", "AW-16837978710", {
+        page_title: row.title || "Untitled Page",
+        page_path: location.pathname,
+      });
+    }
+  }, [location, row]);
 
   return (
     <div>
@@ -11,7 +21,9 @@ const GenericPage = ({ data, row }) => {
       {/* If there's a known link or PDF, display a button */}
       {row.courseSheetUrl && (
         <button
-          onClick={() => window.open(row.courseSheetUrl, "_blank", "noopener,noreferrer")}
+          onClick={() =>
+            window.open(row.courseSheetUrl, "_blank", "noopener,noreferrer")
+          }
         >
           Open Sheet
         </button>
