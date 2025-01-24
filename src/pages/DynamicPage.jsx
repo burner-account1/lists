@@ -4,11 +4,13 @@ import { useParams } from "react-router-dom";
 import NavigationPage from "./NavigationPage";
 import CoursePage from "./CoursePage";
 import GenericPage from "./GenericPage";
+import useDynamicGtag from "./useDynamicGtag";
 
 const DynamicPage = ({ data }) => {
   const { pageId } = useParams();
+  
   const row = data.find((r) => r.id === pageId);
-
+  useDynamicGtag(row?.courseTitle, location.pathname);
   if (!row) return <div>Page not found.</div>;
 
   // If it's a course

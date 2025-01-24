@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import BreadcrumbNav from "./BreadcrumbNav";
+import useDynamicGtag from "./useDynamicGtag";
 
 // Subdued, transparent blue link style
 const linkStyle = {
@@ -11,15 +12,8 @@ const linkStyle = {
 
 const NavigationPage = ({ data, row }) => {
   const location = useLocation();
+  useDynamicGtag(row?.courseTitle, location.pathname);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.gtag) {
-      window.gtag("config", "AW-16837978710", {
-        page_title: row.title,
-        page_path: location.pathname,
-      });
-    }
-  }, [location, row]);
 
   // Find immediate children
   const childPages = data.filter((r) => r.parent === row.id);

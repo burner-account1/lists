@@ -2,19 +2,14 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Papa from "papaparse";
 import BreadcrumbNav from "./BreadcrumbNav";
+import useDynamicGtag from "./useDynamicGtag";
 
 const CoursePage = ({ data, row }) => {
   const location = useLocation();
 
   // ---------- 1) UseEffect to configure Google Tag on path/title change ----------
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.gtag) {
-      window.gtag("config", "AW-16837978710", {
-        page_title: row?.courseTitle || row?.id || "Unknown Course",
-        page_path: location.pathname,
-      });
-    }
-  }, [location, row]);
+  useDynamicGtag(row?.courseTitle, location.pathname);
+
 
   // ---------- 2) Local state ----------
   const [htmlMessage, setHtmlMessage] = useState("");
